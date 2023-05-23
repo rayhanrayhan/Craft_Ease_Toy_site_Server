@@ -36,7 +36,7 @@ async function run() {
             res.send(result)
         })
 
-        app.patch('/allToys', async (req, res) => {
+        app.post('/allToys', async (req, res) => {
             const newToy = req.body;
             const result = await toysCollection.insertOne(newToy);
             res.send(result)
@@ -54,6 +54,29 @@ async function run() {
             const query = { email: email }
             const cursor = toysCollection.find(query)
             const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        app.patch('/allToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const find = { _id: new ObjectId(id) }
+
+            const updatedToy = req.body;
+            const updateDoc = {
+                $set: {
+                    name: updatedToy.name,
+                    image: updatedToy.image,
+                    price: updatedToy.price,
+                    rating: updatedToy.rating,
+                    subCategory: updatedToy.subCategory,
+                    quantity: updatedToy.quantity,
+                    description: updatedToy.description,
+                    seller: updatedToy.seller,
+                    email: updatedToy.email,
+                },
+            };
+
+            const result = await toysCollection.updateOne(find, updateDoc);
             res.send(result)
         })
 
