@@ -31,9 +31,17 @@ async function run() {
         const toysCollection = client.db('craft_ease').collection('toys')
 
         app.get('/allToys', async (req, res) => {
-            const cursor = toysCollection.find().limit(20)
-            const result = await cursor.toArray()
-            res.send(result)
+            const searchQuery = req.query.search;
+
+            let cursor;
+            if (searchQuery) {
+                cursor = toysCollection.find({ name: { $regex: searchQuery, $options: 'i' } });
+            } else {
+                cursor = toysCollection.find().limit(20);
+            }
+
+            const result = await cursor.toArray();
+            res.send(result);
         })
 
         app.post('/allToys', async (req, res) => {
