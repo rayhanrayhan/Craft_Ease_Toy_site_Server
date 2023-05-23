@@ -27,7 +27,7 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
-
+        //  f
         const toysCollection = client.db('craft_ease').collection('toys')
 
         app.get('/allToys', async (req, res) => {
@@ -56,7 +56,7 @@ async function run() {
 }
 run().catch(console.dir);
 
-
+// for chaeak 
 app.get('/', (req, res) => {
     res.send('CreaftEase  is running')
 })
