@@ -50,9 +50,20 @@ async function run() {
         })
 
         app.get('/myToys', async (req, res) => {
+            const sort = req.query.sort;
             const email = req.query.email;
             const query = { email: email }
-            const cursor = toysCollection.find(query)
+
+            let cursor;
+
+            if (sort === 'low') {
+                cursor = toysCollection.find(query).sort({ price: 1 });
+            } else if (sort === 'high') {
+                cursor = toysCollection.find(query).sort({ price: -1 });
+            } else {
+                cursor = toysCollection.find(query);
+            }
+
             const result = await cursor.toArray()
             res.send(result)
         })
